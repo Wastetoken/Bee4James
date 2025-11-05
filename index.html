@@ -96,7 +96,7 @@ import { gsap } from "https://cdn.skypack.dev/gsap"; // Animation library for sm
 // CAMERA SETUP - Controls your view perspective
 // ============================================
 const camera = new THREE.PerspectiveCamera(
-  70,                                    // Field of view (degrees) - EDIT: Higher = wider view
+  170,                                    // Field of view (degrees) - EDIT: Higher = wider view
   window.innerWidth / window.innerHeight, // Aspect ratio
   0.1,                                   // Near clipping plane
   1000                                   // Far clipping plane
@@ -145,9 +145,9 @@ loader.load(
     
     // ENTRANCE ANIMATION - Rotation
     gsap.to(bee.rotation, {
-      x: -6,                   // EDIT: End rotation x
-      y: -3,                   // EDIT: End rotation y
-      z: -3,                   // EDIT: End rotation z
+      x: 1,                   // EDIT: End rotation x
+      y: 1,                   // EDIT: End rotation y
+      z: 2,                   // EDIT: End rotation z
       duration: 4,             // EDIT: Duration in seconds
       ease: "power2.out"
     });
