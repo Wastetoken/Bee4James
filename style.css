@@ -81,7 +81,7 @@ header .content-fit nav ul {
 /* HERO TITLE ("Hey James!") */
 #banner .title.hero-text {
   color: #fff;
-  font-size: 24em; /* Increased for hero prominence */
+  font-size: 36em; /* Increased for hero prominence */
   font-family: "Bright Shade", sans-serif;
   font-weight: bold;
   position: relative;
