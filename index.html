@@ -269,7 +269,10 @@ const flightPath = [
 // ============================================
 // SMOOTH FLIGHT ANIMATION - Interpolates between waypoints
 // ============================================
-const smoothFlight = () => {
+let targetPosition = { x: 0, y: 0, z: 0 };
+let targetRotation = { x: 0, y: 0, z: 0 };
+
+const updateScrollPosition = () => {
   if (!entranceComplete || !bee) return;
   
   // Calculate scroll progress (0 to 1)
@@ -298,34 +301,19 @@ const smoothFlight = () => {
   // Options: 'linear', 'power2.inOut', 'elastic.out', 'back.out'
   const easedProgress = gsap.parseEase("power2.out")(segmentProgress);
   
-  // Interpolate position
-  const newPosition = {
+  // Calculate target position (without applying yet)
+  targetPosition = {
     x: startWaypoint.position.x + (endWaypoint.position.x - startWaypoint.position.x) * easedProgress,
     y: startWaypoint.position.y + (endWaypoint.position.y - startWaypoint.position.y) * easedProgress,
     z: startWaypoint.position.z + (endWaypoint.position.z - startWaypoint.position.z) * easedProgress
   };
   
-  // Interpolate rotation
-  const newRotation = {
+  // Calculate target rotation
+  targetRotation = {
     x: startWaypoint.rotation.x + (endWaypoint.rotation.x - startWaypoint.rotation.x) * easedProgress,
     y: startWaypoint.rotation.y + (endWaypoint.rotation.y - startWaypoint.rotation.y) * easedProgress,
     z: startWaypoint.rotation.z + (endWaypoint.rotation.z - startWaypoint.rotation.z) * easedProgress
   };
-  
-  // Apply smooth position updates directly (no GSAP animation for scroll-based movement)
-  bee.position.x = newPosition.x;
-  bee.position.y = newPosition.y;
-  bee.position.z = newPosition.z;
-  
-  bee.rotation.x = newRotation.x;
-  bee.rotation.y = newRotation.y;
-  bee.rotation.z = newRotation.z;
-  
-  // OPTIONAL: Add subtle floating animation for more natural flight
-  // EDIT: Adjust amplitude and frequency for different floating effects
-  const floatAmplitude = 0.3; // EDIT: How much Goldie bobs up and down
-  const floatSpeed = 2; // EDIT: How fast the floating motion is
-  bee.position.y += Math.sin(Date.now() * 0.001 * floatSpeed) * floatAmplitude;
 };
 
 // ============================================
@@ -333,16 +321,37 @@ const smoothFlight = () => {
 // ============================================
 const reRender3D = () => {
   requestAnimationFrame(reRender3D);
+  
+  if (bee && entranceComplete) {
+    // EDIT: Lerp factor - lower = smoother but slower, higher = more responsive
+    const lerpFactor = 0.1;
+    
+    // Smoothly lerp to target position
+    bee.position.x += (targetPosition.x - bee.position.x) * lerpFactor;
+    bee.position.y += (targetPosition.y - bee.position.y) * lerpFactor;
+    bee.position.z += (targetPosition.z - bee.position.z) * lerpFactor;
+    
+    // Smoothly lerp to target rotation
+    bee.rotation.x += (targetRotation.x - bee.rotation.x) * lerpFactor;
+    bee.rotation.y += (targetRotation.y - bee.rotation.y) * lerpFactor;
+    bee.rotation.z += (targetRotation.z - bee.rotation.z) * lerpFactor;
+    
+    // OPTIONAL: Add subtle floating animation for more natural flight
+    // EDIT: Adjust amplitude and frequency for different floating effects
+    const floatAmplitude = 0.3; // EDIT: How much Goldie bobs up and down
+    const floatSpeed = 2; // EDIT: How fast the floating motion is
+    bee.position.y += Math.sin(Date.now() * 0.001 * floatSpeed) * floatAmplitude;
+  }
+  
   renderer.render(scene, camera);
   if (mixer) mixer.update(0.02);
-  smoothFlight(); // Update position every frame for smooth floating
 };
 reRender3D();
 
 // ============================================
 // EVENT LISTENERS - Responds to user actions
 // ============================================
-window.addEventListener("scroll", smoothFlight);
+window.addEventListener("scroll", updateScrollPosition);
 
 window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
