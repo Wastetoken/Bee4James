@@ -1,0 +1,211 @@
+@import url("https://fonts.cdnfonts.com/css/devil-breeze");
+@import url("https://fonts.cdnfonts.com/css/poppins");
+@import url("https://fonts.cdnfonts.com/css/bimbo");
+@import url("https://fonts.cdnfonts.com/css/bright-shade");
+@import url("https://fonts.cdnfonts.com/css/morgalen");
+@import url("https://fonts.cdnfonts.com/css/centers-george");
+@import url("https://fonts.cdnfonts.com/css/nabla");
+@import url("https://fonts.cdnfonts.com/css/lc-mogi");
+@import url("https://fonts.cdnfonts.com/css/uertas");
+
+body {
+  margin: 0;
+  font-family: "Uertas", sans-serif;
+  background-color: #1b1b1b;
+  color: #eef8ce;
+  font-size: 18px;
+  background-image: url(https://pub-ae7dc8b21b364cde9a59c8e164a546e9.r2.dev/Untitled440_20251104105350.png),
+    repeating-linear-gradient(
+      to right,
+      transparent 0 500px,
+      #73814b33 500px 501px
+    );
+  background-size: 100%;
+  line-height: 1.4;
+}
+*::-webkit-scrollbar {
+  width: 0;
+}
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+.section {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content-fit {
+  width: min(3000px, 90vw);
+  margin: auto;
+  min-height: 150vh;
+  position: relative;
+  padding-block: 10em;
+}
+header {
+  padding-block: 1em;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  backdrop-filter: blur(20px);
+  z-index: 100;
+  background-color: #1b1b1b1b;
+  background-image: repeating-radial-gradient(
+    to right,
+    transparent 0 500px,
+    #eee1 500px 501px
+  );
+}
+header .content-fit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: unset !important;
+  padding-block: unset !important;
+}
+header .content-fit .logo {
+  font-size: 2.8em;
+  font-weight: bold;
+}
+header .content-fit nav ul {
+  display: flex;
+  gap: 2em;
+  font-size: 1.1em;
+}
+
+/* HERO TITLE ("Hey James!") */
+#banner .title.hero-text {
+  color: #d1ff48;
+  font-size: 14em; /* Increased for hero prominence */
+  font-family: "Bright Shade", sans-serif;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+}
+
+/* Section Numbers */
+.section .number {
+  font-family: "Morgalen", sans-serif;
+  font-size: 7em; /* Make 01, 02, 03 consistent */
+  font-weight: bold;
+}
+
+/* Titles */
+.section .content-fit .title {
+  font-family: "Morgalen", sans-serif;
+  font-weight: bold;
+}
+
+/* “I want you to meet Goldie” and “Robo-James” and “AMAZING BEE FACTS” */
+.intro-title,
+.same-as-intro {
+  color: #d1ff48;
+  font-size: 5em;
+  font-weight: 600;
+}
+
+/* GOLDIE THE BEE paragraph-sized elements */
+.goldie-text {
+  color: #d1ff48;
+  font-size: 2.2em; /* Matches GOLDIE THE BEE size */
+  line-height: 1.8;
+}
+
+/* Paragraph defaults */
+.section .content-fit .des p {
+  font-size: 3.1em;
+}
+
+/* Table + Footer */
+#contact table {
+  color: #d1ff48;
+  width: min(800px, 90vw);
+  padding-top: 2em;
+  font-size: 2em;
+  margin: auto;
+}
+#contact table td {
+  padding-block: 0.5em;
+  border-bottom: 1px dashed #445022;
+}
+#contact table td:nth-child(1) {
+  text-align: left;
+  font-weight: 500;
+}
+#contact table td:nth-child(2) {
+  text-align: right;
+  font-weight: 200;
+}
+#contact .sign {
+  font-size: 10em;
+}
+
+/* Decoratives */
+.section .decorate {
+  position: fixed;
+  z-index: -100;
+  pointer-events: none;
+}
+
+/* 3D container */
+#container3D {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media screen and (max-width: 1023px) {
+  body {
+    font-size: 16px;
+  }
+  #banner .title.hero-text {
+    font-size: 6em;
+  }
+  .section .number {
+    font-size: 4em;
+  }
+  .intro-title,
+  .same-as-intro {
+    font-size: 2.5em;
+  }
+  .goldie-text {
+    font-size: 1.4em;
+  }
+  #contact .sign {
+    font-size: 3em;
+  }
+}
+@media screen and (max-width: 767px) {
+  body {
+    font-size: 15px;
+  }
+  header .content-fit .logo {
+    font-size: 1.6em;
+  }
+  #banner .title.hero-text {
+    font-size: 3em;
+  }
+  .section .number {
+    font-size: 3em;
+  }
+  .intro-title,
+  .same-as-intro {
+    font-size: 2em;
+  }
+  .goldie-text {
+    font-size: 1.2em;
+  }
+  #contact table {
+    font-size: 1em;
+  }
+  #contact .sign {
+    font-size: 2em;
+  }
+}
