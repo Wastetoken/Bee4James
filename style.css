@@ -80,8 +80,8 @@ header .content-fit nav ul {
 
 /* HERO TITLE ("Hey James!") */
 #banner .title.hero-text {
-  color: #d1ff48;
-  font-size: 14em; /* Increased for hero prominence */
+  color: #fff;
+  font-size: 24em; /* Increased for hero prominence */
   font-family: "Bright Shade", sans-serif;
   font-weight: bold;
   position: relative;
@@ -104,14 +104,14 @@ header .content-fit nav ul {
 /* “I want you to meet Goldie” and “Robo-James” and “AMAZING BEE FACTS” */
 .intro-title,
 .same-as-intro {
-  color: #d1ff48;
+  color: #fff;
   font-size: 5em;
   font-weight: 600;
 }
 
 /* GOLDIE THE BEE paragraph-sized elements */
 .goldie-text {
-  color: #d1ff48;
+  color: #fff;
   font-size: 2.2em; /* Matches GOLDIE THE BEE size */
   line-height: 1.8;
 }
