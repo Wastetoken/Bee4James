@@ -85,101 +85,139 @@
 <div id="container3D"></div>
 
 <script type="module">
+// ============================================
+// IMPORTS - External libraries
+// ============================================
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
-import { gsap } from "https://cdn.skypack.dev/gsap";
+import { gsap } from "https://cdn.skypack.dev/gsap"; // Animation library for smooth transitions
 
+// ============================================
+// CAMERA SETUP - Controls your view perspective
+// ============================================
 const camera = new THREE.PerspectiveCamera(
-  70,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
+  70,                                    // Field of view (degrees) - EDIT: Higher = wider view
+  window.innerWidth / window.innerHeight, // Aspect ratio
+  0.1,                                   // Near clipping plane
+  1000                                   // Far clipping plane
 );
-camera.position.z = 24;
+camera.position.z = 21; // EDIT: Starting camera distance (z-axis) - Higher = further away
 
+// ============================================
+// SCENE SETUP - The 3D world container
+// ============================================
 const scene = new THREE.Scene();
-let bee;
-let mixer;
-let entranceComplete = false;
-const loader = new GLTFLoader();
+let bee;                    // Will hold the 3D bee model
+let mixer;                  // Handles 3D model animations
+let entranceComplete = false; // Flag to track if intro animation finished
+const loader = new GLTFLoader(); // Loads 3D models in GLTF format
 
+// ============================================
+// MODEL LOADING - Loads and configures the bee
+// ============================================
 loader.load(
   "https://raw.githubusercontent.com/DennysDionigi/bee-glb/94253437c023643dd868592e11a0fd2c228cfe07/demon_bee_full_texture.glb",
   function (gltf) {
     bee = gltf.scene;
     
-    bee.position.set(1, 1, 0);
-    bee.rotation.set(0, 11, 10);
-    bee.scale.set(0.01, 0.8, 0.8);
+    // INITIAL POSITION - Starting point for entrance animation
+    bee.position.set(1, 1, 0);    // EDIT: (x, y, z) starting position
+    bee.rotation.set(0, 11, 10);  // EDIT: (x, y, z) starting rotation in radians
+    bee.scale.set(0.01, 0.8, 0.8); // EDIT: (x, y, z) starting scale - smaller = smaller model
     
     scene.add(bee);
 
+    // MODEL ANIMATION - Plays built-in bee wing/body animations
     mixer = new THREE.AnimationMixer(bee);
     mixer.clipAction(gltf.animations[0]).play();
     
+    // ENTRANCE ANIMATION - Position movement
     gsap.to(bee.position, {
-      x: 3,
-      y: 4,
-      z: 6,
-      duration: 4,
-      ease: "power2.out",
+      x: 3,                    // EDIT: End position x
+      y: 4,                    // EDIT: End position y
+      z: 6,                    // EDIT: End position z
+      duration: 4,             // EDIT: Animation duration in seconds
+      ease: "power2.out",      // EDIT: Easing function (power2.out, linear, elastic, etc.)
       onComplete: () => {
-        entranceComplete = true;
+        entranceComplete = true; // Allows scroll-based movement after intro
       }
     });
     
+    // ENTRANCE ANIMATION - Rotation
     gsap.to(bee.rotation, {
-      x: -3,
-      y: -3,
-      z: -3,
-      duration: 4,
+      x: -3,                   // EDIT: End rotation x
+      y: -3,                   // EDIT: End rotation y
+      z: -3,                   // EDIT: End rotation z
+      duration: 4,             // EDIT: Duration in seconds
       ease: "power2.out"
     });
     
+    // ENTRANCE ANIMATION - Scale/size
     gsap.to(bee.scale, {
-      x: 8,
-      y: 8,
-      z: 8,
-      duration: 4,
+      x: 8,                    // EDIT: Final scale x
+      y: 8,                    // EDIT: Final scale y
+      z: 8,                    // EDIT: Final scale z
+      duration: 4,             // EDIT: Duration in seconds
       ease: "power2.out"
     });
   },
   function (xhr) {
-    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    console.log((xhr.loaded / xhr.total) * 100 + "% loaded"); // Loading progress
   },
   function (error) {
-    console.error("Error loading model:", error);
+    console.error("Error loading model:", error); // Error handling
   }
 );
 
-const renderer = new THREE.WebGLRenderer({ alpha: true });
+// ============================================
+// RENDERER SETUP - Displays the 3D scene
+// ============================================
+const renderer = new THREE.WebGLRenderer({ alpha: true }); // alpha: true = transparent background
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container3D").appendChild(renderer.domElement);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+// ============================================
+// LIGHTING SETUP - Controls scene illumination
+// ============================================
+// AMBIENT LIGHT - Soft overall lighting from all directions
+const ambientLight = new THREE.AmbientLight(
+  0xffffff,  // EDIT: Light color (hex) - 0xffffff = white
+  1.3        // EDIT: Light intensity - Higher = brighter
+);
 scene.add(ambientLight);
 
-const topLight = new THREE.DirectionalLight(0xffffff, 1);
-topLight.position.set(500, 500, 500);
+// DIRECTIONAL LIGHT - Strong directional light (like sunlight)
+const topLight = new THREE.DirectionalLight(
+  0xffffff,  // EDIT: Light color (hex)
+  1          // EDIT: Light intensity
+);
+topLight.position.set(500, 500, 500); // EDIT: Light position (x, y, z)
 scene.add(topLight);
 
+// ============================================
+// RENDER LOOP - Continuously updates the scene
+// ============================================
 const reRender3D = () => {
-  requestAnimationFrame(reRender3D);
-  renderer.render(scene, camera);
-  if (mixer) mixer.update(0.02);
+  requestAnimationFrame(reRender3D); // Loops at ~60fps
+  renderer.render(scene, camera);     // Renders the scene
+  if (mixer) mixer.update(0.02);      // EDIT: Animation speed - Higher = faster wing flaps
 };
 reRender3D();
 
+// ============================================
+// FLIGHT CONTROLS - Scroll-based positioning
+// ============================================
+// Array of positions for each section of your page
 let arrPositionModel = [
   {
-    id: "banner",
-    position: { x: 0, y: -1, z: 0 },
-    rotation: { x: 0, y: 1.5, z: 0 }
+    id: "banner",                        // EDIT: Must match section ID in HTML
+    position: { x: 0, y: -1, z: 0 },    // EDIT: Bee position for this section
+    rotation: { x: 0, y: 1.5, z: 0 }    // EDIT: Bee rotation for this section
   },
   {
     id: "intro",
-    position: { x: 12, y: -1, z: -5 },
-    rotation: { x: 0.5, y: -0.5, z: 0.5 }
+    position: { x: 12, y: -1, z: -5 },  // EDIT: Position (x right/left, y up/down, z forward/back)
+    rotation: { x: 0.5, y: -0.5, z: 0.5 } // EDIT: Rotation in radians
   },
   {
     id: "description",
@@ -193,45 +231,61 @@ let arrPositionModel = [
   }
 ];
 
+// Function that moves bee based on scroll position
 const modelMove = () => {
-  if (!entranceComplete) return;
+  if (!entranceComplete) return; // Don't move until entrance animation finishes
   
-  const sections = document.querySelectorAll(".section");
+  const sections = document.querySelectorAll(".section"); // EDIT: Change ".section" to match your HTML class
   let currentSection;
+  
+  // Detects which section is currently in view
   sections.forEach((section) => {
     const rect = section.getBoundingClientRect();
-    if (rect.top <= window.innerHeight / 3) {
+    if (rect.top <= window.innerHeight / 3) { // EDIT: window.innerHeight / 3 = trigger point
       currentSection = section.id;
     }
   });
+  
+  // Finds matching position from array
   let position_active = arrPositionModel.findIndex(
     (val) => val.id == currentSection
   );
+  
+  // Animates bee to new position
   if (position_active >= 0) {
     let new_coordinates = arrPositionModel[position_active];
+    
+    // Position animation
     gsap.to(bee.position, {
       x: new_coordinates.position.x,
       y: new_coordinates.position.y,
       z: new_coordinates.position.z,
-      duration: 3,
-      ease: "power1.out"
+      duration: 3,              // EDIT: Scroll transition duration
+      ease: "power1.out"        // EDIT: Easing function
     });
+    
+    // Rotation animation
     gsap.to(bee.rotation, {
       x: new_coordinates.rotation.x,
       y: new_coordinates.rotation.y,
       z: new_coordinates.rotation.z,
-      duration: 3,
+      duration: 3,              // EDIT: Scroll transition duration
       ease: "power1.out"
     });
   }
 };
 
+// ============================================
+// EVENT LISTENERS - Responds to user actions
+// ============================================
+// Triggers bee movement on scroll
 window.addEventListener("scroll", () => {
   if (bee) {
     modelMove();
   }
 });
 
+// Handles window resizing
 window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
